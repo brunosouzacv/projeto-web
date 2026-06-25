@@ -29,7 +29,7 @@ export default function Departamentos() {
             <tr key={d.id}>
               <td>{d.nome}</td>
               <td>{d.sigla}</td>
-              <td>{d.unidade_academica}</td>
+              <td>{d.unidade_academica_nome}</td>
             </tr>
           ))}
         </tbody>

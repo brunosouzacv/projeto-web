@@ -78,6 +78,7 @@ class TCC(models.Model):
         ('2025/2', '2025/2'),
 
         ('2026/1', '2026/1'),
+        ('2026/2', '2026/2'),
     ]
 
     titulo = models.CharField(max_length=255)

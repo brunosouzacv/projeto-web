@@ -1,4 +1,3 @@
-api.get(`professores/?search=${busca}`);
 import { useEffect, useState } from "react";
 import api from "../services/api";
 
@@ -28,7 +27,7 @@ export default function Professores() {
           {professores.map((p) => (
             <tr key={p.id}>
               <td>{p.nome}</td>
-              <td>{p.departamento}</td>
+              <td>{p.departamento_nome}</td>
             </tr>
           ))}
         </tbody>

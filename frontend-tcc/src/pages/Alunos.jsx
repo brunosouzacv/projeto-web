@@ -29,7 +29,7 @@ export default function Alunos() {
             <tr key={a.id}>
               <td>{a.nome}</td>
               <td>{a.matricula}</td>
-              <td>{a.curso}</td>
+              <td>{a.curso_nome}</td>
             </tr>
           ))}
         </tbody>

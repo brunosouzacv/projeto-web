@@ -3,23 +3,18 @@ import api from "../services/api";
 
 export default function TCCs() {
   const [tccs, setTccs] = useState([]);
+  const [busca, setBusca] = useState("");
 
   useEffect(() => {
     carregar();
-  }, []);
+  }, [busca]);
 
   function carregar() {
-    api.get("tccs/").then((res) => setTccs(res.data));
+    api.get(`tccs/?search=${busca}`).then((res) => setTccs(res.data));
   }
 
-  async function mudarStatus(id, status) {
-    const tcc = tccs.find((t) => t.id === id);
-
-    await api.put(`tccs/${id}/`, {
-      ...tcc,
-      status,
-    });
-
+  async function mudarStatus(id, novoStatus) {
+    await api.patch(`tccs/${id}/`, { status: novoStatus });
     carregar();
   }
 
@@ -27,13 +22,23 @@ export default function TCCs() {
     <div>
       <h2>TCCs</h2>
 
-      <table className="table">
+      <input
+        className="form-control mb-3"
+        placeholder="Buscar por título ou resumo..."
+        onChange={(e) => setBusca(e.target.value)}
+      />
+
+      <table className="table table-striped">
         <thead>
           <tr>
             <th>Título</th>
+            <th>Aluno</th>
+            <th>Orientador</th>
+            <th>Tipo</th>
+            <th>Semestre</th>
             <th>Status</th>
             <th>Arquivo</th>
-            <th>Ação</th>
+            <th>Alterar Status</th>
           </tr>
         </thead>
 
@@ -41,19 +46,24 @@ export default function TCCs() {
           {tccs.map((t) => (
             <tr key={t.id}>
               <td>{t.titulo}</td>
-
+              <td>{t.aluno_nome}</td>
+              <td>{t.orientador_nome}</td>
+              <td>{t.tipo_display}</td>
+              <td>{t.semestre_letivo_defesa || "-"}</td>
               <td>{t.status_display}</td>
-
               <td>
                 {t.arquivo && (
-                  <a href={t.arquivo} target="_blank">
+                  <a href={t.arquivo} target="_blank" rel="noreferrer">
                     PDF
                   </a>
                 )}
               </td>
-
               <td>
-                <select value={t.status} onChange={(e) => mudarStatus(t.id, e.target.value)}>
+                <select
+                  className="form-select form-select-sm"
+                  value={t.status}
+                  onChange={(e) => mudarStatus(t.id, e.target.value)}
+                >
                   <option value="0">Em Elaboração</option>
                   <option value="1">Enviado</option>
                   <option value="2">Aprovado</option>
